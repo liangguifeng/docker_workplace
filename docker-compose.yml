@@ -1,0 +1,62 @@
+version: '3.7'
+services: 
+  php:
+    container_name: php-1
+    ports:
+      - 19000:9000
+    build:
+      context: ./php
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+    networks:
+      - htdf
+    volumes:
+      - ${BACKEND_ROOT}:${BACKEND_ROOT}
+      - ./php/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php/config/fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./php/entrypoint.sh:/entrypoint.sh
+      - ./php/config/conf.d:/usr/local/etc/php/conf.d
+    environment:
+      TZ: ${TZ}
+      BACKEND_ROOT: ${BACKEND_ROOT}
+    entrypoint: /entrypoint.sh
+
+  nginx:
+    image: nginx:${NGINX_VERSION}
+    container_name: nginx-1
+    ports:
+      - ${HTTP_LISTEN_ADDRESS}:${HTTP_LISTEN_PORT}:80
+    depends_on:
+      - php
+      - redis
+    networks:
+      - htdf
+    volumes:
+      - ${BACKEND_ROOT}:${BACKEND_ROOT}
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/entrypoint.sh:/entrypoint.sh
+      - ./logs:/logs
+    environment:
+      TZ: ${TZ}
+      VHOST_LISTEN_ADDRESS: ${VHOST_LISTEN_ADDRESS}
+      BACKEND_ROOT: ${BACKEND_ROOT}
+    entrypoint: /entrypoint.sh
+
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: redis-1
+    volumes:
+      - redis:/data
+      - ./redis/redis.conf:/redis.conf
+    ports:
+      - ${REDIS_HOST_PORT}:6379
+    networks:
+      - htdf
+    command: ['redis-server', '/redis.conf']
+
+networks:
+  htdf:
+
+volumes:
+  redis:
+  webser:
