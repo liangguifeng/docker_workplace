@@ -1,5 +1,7 @@
 [PHP]
 
+swoole.use_shortname=Off
+
 ;;;;;;;;;;;;;;;;;;;
 ; About php.ini   ;
 ;;;;;;;;;;;;;;;;;;;

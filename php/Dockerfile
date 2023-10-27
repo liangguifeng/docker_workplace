@@ -10,12 +10,26 @@ RUN sed -i "s:dl-cdn.alpinelinux.org:${ALPINE_URL}:g" /etc/apk/repositories \
     # 常用工具
     zip curl git wget vim busybox-extras \
     # PHP扩展使用必备库
-    autoconf make gcc musl-dev g++ libffi-dev openssl-dev zlib-dev libxml2-dev oniguruma-dev openssl-dev libpng-dev icu-dev libzip-dev postgresql-dev gettext-dev gmp-dev
+    autoconf make gcc musl-dev g++ libffi-dev openssl-dev zlib-dev libxml2-dev oniguruma-dev openssl-dev \
+    libpng-dev icu-dev libzip-dev postgresql-dev gettext-dev gmp-dev freetype-dev libwebp-dev
 
 # PHP扩展安装
-RUN docker-php-ext-install bcmath ctype dom fileinfo filter ftp gd gettext gmp intl json mbstring mysqli
-RUN docker-php-ext-install pcntl pdo pdo_mysql phar posix session shmop 
+RUN docker-php-ext-install bcmath ctype dom fileinfo filter ftp gettext gmp intl json mbstring mysqli
+RUN docker-php-ext-install pcntl pdo pdo_mysql pdo_pgsql phar posix session shmop
 RUN docker-php-ext-install simplexml soap sockets tokenizer xml xmlrpc xmlwriter zip
+RUN apk add --no-cache \
+    freetype \
+    libpng \
+    libjpeg-turbo \
+    freetype-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    && docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-webp \
+    && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) && \
+    docker-php-ext-install -j${NPROC} gd
 RUN pecl install -o -f redis \
     &&  docker-php-ext-enable redis
 RUN pecl install swoole-4.8.12 \
