@@ -14,6 +14,7 @@ services:
       - ./php-74/config/fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
       - ./php-74/entrypoint.sh:/entrypoint.sh
       - ./php-74/config/conf.d:/usr/local/etc/php/conf.d
+      - ./logs:/logs
     environment:
       TZ: ${TZ}
       BACKEND_ROOT: ${BACKEND_ROOT}
@@ -29,10 +30,11 @@ services:
       - htdf
     volumes:
       - ${BACKEND_ROOT}:${BACKEND_ROOT}
-#      - ./php-81/config/php.ini:/usr/local/etc/php/php.ini
-#      - ./php-81/config/fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./php-81/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php-81/config/fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
       - ./php-81/entrypoint.sh:/entrypoint.sh
-#      - ./php-81/config/conf.d:/usr/local/etc/php/conf.d
+      - ./php-81/config/conf.d:/usr/local/etc/php/conf.d
+      - ./logs:/logs
     environment:
       TZ: ${TZ}
       BACKEND_ROOT: ${BACKEND_ROOT}

@@ -1,3 +1,0 @@
-*.ini
-/conf.d/*.ini
-/fpm/*.conf
