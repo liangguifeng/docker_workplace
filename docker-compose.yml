@@ -1,21 +1,38 @@
 version: '3.7'
 services: 
-  php:
+  php-74:
     container_name: php-74
     ports:
-      - 19000:9000
+      - 19074:9000
     build:
-      context: ./php
-      args:
-        PHP_VERSION: ${PHP_VERSION}
+      context: php-74
     networks:
       - htdf
     volumes:
       - ${BACKEND_ROOT}:${BACKEND_ROOT}
-      - ./php/config/php.ini:/usr/local/etc/php/php.ini
-      - ./php/config/fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
-      - ./php/entrypoint.sh:/entrypoint.sh
-      - ./php/config/conf.d:/usr/local/etc/php/conf.d
+      - ./php-74/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php-74/config/fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./php-74/entrypoint.sh:/entrypoint.sh
+      - ./php-74/config/conf.d:/usr/local/etc/php/conf.d
+    environment:
+      TZ: ${TZ}
+      BACKEND_ROOT: ${BACKEND_ROOT}
+    entrypoint: /entrypoint.sh
+
+  php-81:
+    container_name: php-81
+    ports:
+      - 19081:9000
+    build:
+      context: php-81
+    networks:
+      - htdf
+    volumes:
+      - ${BACKEND_ROOT}:${BACKEND_ROOT}
+#      - ./php-81/config/php.ini:/usr/local/etc/php/php.ini
+#      - ./php-81/config/fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./php-81/entrypoint.sh:/entrypoint.sh
+#      - ./php-81/config/conf.d:/usr/local/etc/php/conf.d
     environment:
       TZ: ${TZ}
       BACKEND_ROOT: ${BACKEND_ROOT}
@@ -25,9 +42,10 @@ services:
     image: nginx:${NGINX_VERSION}
     container_name: nginx
     ports:
-      - ${HTTP_LISTEN_ADDRESS}:${HTTP_LISTEN_PORT}:80
+      - 12100:80
     depends_on:
-      - php
+      - php-74
+      - php-81
       - redis
     networks:
       - htdf
@@ -38,7 +56,7 @@ services:
       - ./logs:/logs
     environment:
       TZ: ${TZ}
-      VHOST_LISTEN_ADDRESS: ${VHOST_LISTEN_ADDRESS}
+      VHOST_LISTEN_ADDRESS: localhost
       BACKEND_ROOT: ${BACKEND_ROOT}
     entrypoint: /entrypoint.sh
 
