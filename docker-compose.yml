@@ -39,7 +39,7 @@ services:
     entrypoint: /entrypoint.sh
 
   nginx:
-    image: nginx:${NGINX_VERSION}
+    image: nginx:alpine
     container_name: nginx
     ports:
       - 12100:80
@@ -61,13 +61,13 @@ services:
     entrypoint: /entrypoint.sh
 
   redis:
-    image: redis:${REDIS_VERSION}
+    image: redis:5-alpine
     container_name: redis
     volumes:
       - redis:/data
       - ./redis/redis.conf:/redis.conf
     ports:
-      - ${REDIS_HOST_PORT}:6379
+      - 12200:6379
     networks:
       - htdf
     command: ['redis-server', '/redis.conf']
