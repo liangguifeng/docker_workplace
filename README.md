@@ -1,4 +1,4 @@
-# 海旅免税docker-compose
+# 本地开发docker-compose配置
 
 # 说明
 .env 文件遍历并未完全使用
