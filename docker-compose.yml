@@ -76,6 +76,7 @@ services:
 
 networks:
   workplace:
+    driver: host
 
 volumes:
   redis:
