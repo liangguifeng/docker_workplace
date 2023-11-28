@@ -5,8 +5,6 @@ LABEL maintainer="liangguifeng@htdf.group"
 ARG ALPINE_URL=dl-cdn.alpinelinux.org
 #ARG ALPINE_URL=mirrors.aliyun.com
 
-ENV BACKEND_ROOT=${BACKEND_ROOT}
-
 RUN sed -i "s:dl-cdn.alpinelinux.org:${ALPINE_URL}:g" /etc/apk/repositories \
     && apk add --no-cache --virtual .build-deps \
     $PHPIZE_DEPS \
@@ -17,7 +15,5 @@ RUN sed -i "s:dl-cdn.alpinelinux.org:${ALPINE_URL}:g" /etc/apk/repositories \
     libpng-dev icu-dev libzip-dev postgresql-dev gettext-dev gmp-dev freetype-dev libwebp-dev \
     freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev \
     && apk del $PHPIZE_DEPS
-
-WORKDIR /etc/nginx/conf.d
 
 ENV TZ ${TZ:-Asia/Shanghai}

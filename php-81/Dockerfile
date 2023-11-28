@@ -5,8 +5,6 @@ LABEL maintainer="liangguifeng@htdf.group"
 ARG ALPINE_URL=dl-cdn.alpinelinux.org
 #ARG ALPINE_URL=mirrors.aliyun.com
 
-ENV BACKEND_ROOT=${BACKEND_ROOT}
-
 RUN sed -i "s:dl-cdn.alpinelinux.org:${ALPINE_URL}:g" /etc/apk/repositories \
     && apk add --no-cache --virtual .build-deps \
     $PHPIZE_DEPS \
@@ -42,7 +40,5 @@ RUN pecl install xdebug-3.1.5 \
 
 # Composer
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
-
-WORKDIR $BACKEND_ROOT
 
 ENV TZ ${TZ:-Asia/Shanghai}
