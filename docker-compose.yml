@@ -2,6 +2,8 @@ version: '3.7'
 services: 
   php-74:
     container_name: php-74
+    env_file:
+      - .env
     ports:
       - 19074:9000
     build:
@@ -22,6 +24,8 @@ services:
 
   php-81:
     container_name: php-81
+    env_file:
+      - .env
     ports:
       - 19081:9000
     build:
@@ -41,10 +45,13 @@ services:
     entrypoint: /entrypoint.sh
 
   nginx:
-    image: nginx:alpine
     container_name: nginx
+    env_file:
+      - .env
     ports:
       - 12100:80
+    build:
+      context: nginx
     depends_on:
       - php-74
       - php-81
@@ -65,6 +72,7 @@ services:
   redis:
     image: redis:5-alpine
     container_name: redis
+    working_dir: /
     volumes:
       - redis:/data
       - ./redis/redis.conf:/redis.conf
