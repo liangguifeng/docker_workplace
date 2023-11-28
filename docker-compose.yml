@@ -72,7 +72,7 @@ services:
   redis:
     image: redis:5-alpine
     container_name: redis
-    working_dir: /
+    working_dir: /etc
     volumes:
       - redis:/data
       - ./redis/redis.conf:/redis.conf
