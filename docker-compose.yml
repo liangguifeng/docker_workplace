@@ -1,5 +1,4 @@
-version: '3.7'
-services: 
+services:
   php-74:
     container_name: php-74
     working_dir: ${BACKEND_ROOT}

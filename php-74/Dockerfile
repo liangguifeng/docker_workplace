@@ -15,8 +15,6 @@ RUN sed -i "s:dl-cdn.alpinelinux.org:${ALPINE_URL}:g" /etc/apk/repositories \
     libpng-dev icu-dev libzip-dev postgresql-dev gettext-dev gmp-dev freetype-dev libwebp-dev \
     rabbitmq-c-dev libcurl curl-dev c-ares-dev sqlite-dev freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev
 
-RUN apk del $PHPIZE_DEPS
-
 RUN NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1)
 
 # PHP扩展安装 -j$(nproc)指使用系统上可用的处理器核心数量作为并行编译的任务数量
@@ -27,10 +25,12 @@ RUN docker-php-ext-install -j$(nproc) opcache
 RUN docker-php-ext-configure gd \
     --with-freetype \
     --with-jpeg \
-    --with-webp \
-RUN docker-php-ext-install -j$(nproc) gd
+    --with-webp && \
+    docker-php-ext-install -j$(nproc) gd
 
-RUN curl -SL "https://github.com/swoole/swoole-src/archive/v5.1.2.tar.gz" -o swoole.tar.gz \
+# 4.8 版本需要 php-7.2 或更高版本
+# 5.0 版本需要 php-8.0 或更高版本
+RUN curl -SL "https://github.com/swoole/swoole-src/archive/v4.8.12.tar.gz" -o swoole.tar.gz \
     && ls -alh \
     && mkdir -p swoole \
     && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
@@ -43,12 +43,24 @@ RUN curl -SL "https://github.com/swoole/swoole-src/archive/v5.1.2.tar.gz" -o swo
 
 RUN pecl install -o -f redis \
     &&  docker-php-ext-enable redis
-RUN pecl install xdebug-3.1.5 \
+RUN pecl install xdebug-3.3.2 \
     && docker-php-ext-enable xdebug
 RUN pecl install amqp \
     && docker-php-ext-enable amqp
 
 # Composer
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
+
+RUN rm -rf /tmp \
+    && apk del $PHPIZE_DEPS \
+    && apk del .build-deps \
+    && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/local/bin/php* \
+    # php info
+    && php -v \
+    && php -m \
+    && php --ri swoole \
+    && php --ri Zend\ OPcache \
+    && composer \
+    && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
 ENV TZ ${TZ:-Asia/Shanghai}
