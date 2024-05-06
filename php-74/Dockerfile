@@ -28,39 +28,25 @@ RUN docker-php-ext-configure gd \
     --with-webp && \
     docker-php-ext-install -j$(nproc) gd
 
-# 4.8 版本需要 php-7.2 或更高版本
-# 5.0 版本需要 php-8.0 或更高版本
-RUN curl -SL "https://github.com/swoole/swoole-src/archive/v4.8.12.tar.gz" -o swoole.tar.gz \
-    && ls -alh \
-    && mkdir -p swoole \
-    && tar -xf swoole.tar.gz -C swoole --strip-components=1 \
-    && ( \
-        cd swoole \
-        && phpize \
-        && ./configure --enable-openssl --enable-swoole-curl --enable-cares --enable-swoole-pgsql --enable-swoole-sqlite \
-        && make -s -j$(nproc) && make install \
-    )
 
 RUN pecl install -o -f redis \
-    &&  docker-php-ext-enable redis
-RUN pecl install xdebug-3.3.2 \
+    && docker-php-ext-enable redis
+RUN pecl install xdebug-3.1.6 \
     && docker-php-ext-enable xdebug
+# 4.8 版本需要 php-7.2 或更高版本
+# 5.0 版本需要 php-8.0 或更高版本
+RUN pecl install swoole-4.8.12 \
+    && docker-php-ext-enable swoole
 RUN pecl install amqp \
     && docker-php-ext-enable amqp
 
 # Composer
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
-RUN rm -rf /tmp \
-    && apk del $PHPIZE_DEPS \
-    && apk del .build-deps \
-    && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /usr/local/bin/php* \
-    # php info
-    && php -v \
+RUN php -v \
     && php -m \
     && php --ri swoole \
     && php --ri Zend\ OPcache \
-    && composer \
     && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
 ENV TZ ${TZ:-Asia/Shanghai}
