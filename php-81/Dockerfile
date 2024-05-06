@@ -41,10 +41,20 @@ RUN pecl install amqp \
 # Composer
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
+ENV TZ ${TZ:-Asia/Shanghai}
+
+RUN apk add --no-cache zsh && \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+    sed -i 's/ash/zsh/g' /etc/passwd
+
+RUN git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-completions \
+    && git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
+    && sed -i '/^plugins=(git)/d' /root/.zshrc \
+    && sed -i '$ a plugins=(git zsh-completions zsh-autosuggestions)' /root/.zshrc \
+    && zsh -i -c 'source /root/.zshrc'
+
 RUN php -v \
     && php -m \
     && php --ri swoole \
     && php --ri Zend\ OPcache \
     && echo -e "\033[42;37m Build Completed :).\033[0m\n"
-
-ENV TZ ${TZ:-Asia/Shanghai}
