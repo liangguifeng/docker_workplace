@@ -28,6 +28,11 @@
 
 4. 执行 `docker-compose up -d`
 
+镜像地址：
+php-74: `crpi-hdpivebb90b1ve6r.cn-shenzhen.personal.cr.aliyuncs.com/docker-workplace/php-74:latest`
+php-81: `crpi-hdpivebb90b1ve6r.cn-shenzhen.personal.cr.aliyuncs.com/docker-workplace/php-81:latest`
+nginx: `crpi-hdpivebb90b1ve6r.cn-shenzhen.personal.cr.aliyuncs.com/docker-workplace/nginx:latest`
+
 # 增加端口监听
 1. 使用hyperf开发的同学，如需要再宿主机调试，则需要将hyperf端口暴露出来
 
