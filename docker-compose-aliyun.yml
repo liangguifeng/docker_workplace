@@ -1,11 +1,10 @@
 services:
   php-74:
+    image: crpi-hdpivebb90b1ve6r.cn-shenzhen.personal.cr.aliyuncs.com/docker-workplace/php-74:latest
     container_name: php-74
     working_dir: ${BACKEND_ROOT}
     ports:
       - 19074:9000
-    build:
-      context: php-74
     networks:
       - workplace
     volumes:
@@ -21,13 +20,11 @@ services:
     entrypoint: /entrypoint.sh
 
   php-81:
+    image: crpi-hdpivebb90b1ve6r.cn-shenzhen.personal.cr.aliyuncs.com/docker-workplace/php-81:latest
     container_name: php-81
     working_dir: ${BACKEND_ROOT}
     ports:
       - 19081:9000
-      - 19501:9501
-    build:
-      context: php-81
     networks:
       - workplace
     volumes:
@@ -43,12 +40,11 @@ services:
     entrypoint: /entrypoint.sh
 
   nginx:
+    image: crpi-hdpivebb90b1ve6r.cn-shenzhen.personal.cr.aliyuncs.com/docker-workplace/nginx:latest
     container_name: nginx
     working_dir: /etc/nginx/conf.d
     ports:
       - 12100:80
-    build:
-      context: nginx
     depends_on:
       - php-74
       - php-81
