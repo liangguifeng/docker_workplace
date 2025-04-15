@@ -27,6 +27,8 @@ RUN docker-php-ext-configure gd \
     --with-webp \
     && docker-php-ext-install -j$(nproc) gd
 
+RUN pecl install -o -f mongodb \
+    && docker-php-ext-enable mongodb
 RUN pecl install -o -f redis \
     && docker-php-ext-enable redis
 RUN pecl install xdebug-3.3.2 \
