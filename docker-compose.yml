@@ -57,13 +57,13 @@ services:
       workplace:
         aliases:
           # 希望能在容器中互相访问，则可以给nginx设置别名，让容器访问下面url时，会访问到nginx容器，然后nginx解析后，会到达对应的php容器
-          - outlet-frontend.hltmsp.local
-          - outlet-backend.hltmsp.local
-          - hyg-api.hltmsp.local
-          - hyg-pay.hltmsp.local
-          - hyg-openapi.hltmsp.local
-          - hyg-admin.hltmsp.local
-          - datacenter.hltmsp.local
+          - outlet-frontend.hltmsp.test
+          - outlet-backend.hltmsp.test
+          - hyg-api.hltmsp.test
+          - hyg-pay.hltmsp.test
+          - hyg-openapi.hltmsp.test
+          - hyg-admin.hltmsp.test
+          - datacenter.hltmsp.test
     volumes:
       - ${BACKEND_ROOT}:${BACKEND_ROOT}
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf

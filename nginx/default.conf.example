@@ -1,6 +1,6 @@
 server {
     listen       80;
-    server_name  hyg-admin.hltmsp.local;
+    server_name  hyg-admin.hltmsp.test;
     access_log /logs/nginx/hyg-admin-access.log;
     error_log /logs/nginx/hyg-admin-error.log;
     root /Users/liang/www/code.aliyun.com/htdf/htdf_tax_buy/backend/web;
@@ -24,7 +24,7 @@ server {
 
 server {
     listen       80;
-    server_name  hyg-api.hltmsp.local;
+    server_name  hyg-api.hltmsp.test;
     access_log /logs/nginx/hyg-api-access.log;
     error_log /logs/nginx/hyg-api-error.log;
     root /Users/liang/www/code.aliyun.com/htdf/htdf_tax_buy/api/web;
@@ -48,7 +48,7 @@ server {
 
 server {
     listen       80;
-    server_name  datacenter.hltmsp.local;
+    server_name  datacenter.hltmsp.test;
     access_log /logs/nginx/datacenter-access.log;
     error_log /logs/nginx/datacenter-error.log;
     root /Users/liang/www/code.aliyun.com/htdf/datacenter/frontend/web;
@@ -72,7 +72,7 @@ server {
 
 server {
     listen       80;
-    server_name  outlet-frontend.hltmsp.local;
+    server_name  outlet-frontend.hltmsp.test;
     access_log /logs/nginx/outlet-frontend-access.log;
     error_log /logs/nginx/outlet-frontend-error.log;
     root /Users/liang/www/gitlab.hltct.cn/outlet/frontend/web;
@@ -96,7 +96,7 @@ server {
 
 server {
     listen       80;
-    server_name  outlet-backend.hltmsp.local;
+    server_name  outlet-backend.hltmsp.test;
     access_log /logs/nginx/outlet-backend-access.log;
     error_log /logs/nginx/outlet-backend-error.log;
     root /Users/liang/www/gitlab.hltct.cn/outlet/backend/web;
