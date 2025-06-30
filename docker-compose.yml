@@ -15,6 +15,7 @@ services:
       - ./php-74/entrypoint.sh:/entrypoint.sh
       - ./php-74/config/conf.d:/usr/local/etc/php/conf.d
       - ./logs:/logs
+      - ./.zshrc:/root/.zshrc
     environment:
       TZ: ${TZ}
       BACKEND_ROOT: ${BACKEND_ROOT}
@@ -37,6 +38,7 @@ services:
       - ./php-81/entrypoint.sh:/entrypoint.sh
       - ./php-81/config/conf.d:/usr/local/etc/php/conf.d
       - ./logs:/logs
+      - ./.zshrc:/root/.zshrc
     environment:
       TZ: ${TZ}
       BACKEND_ROOT: ${BACKEND_ROOT}
