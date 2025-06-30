@@ -64,8 +64,8 @@ RUN pecl install -o -f amqp \
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
 # ZSH Shell
-RUN apk add --no-cache zsh
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+RUN apk add --no-cache zsh \
+    && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
 
 # ZSH Plugin
 RUN git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-completions \

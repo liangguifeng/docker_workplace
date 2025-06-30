@@ -52,6 +52,7 @@ RUN pecl install xdebug-3.1.6 \
 # Swoole
 # 4.8 版本需要 php-7.2 或更高版本
 # 5.0 版本需要 php-8.0 或更高版本
+# 6.0 版本需要 PHP-8.1 或更高版本
 RUN pecl install swoole-4.8.12 \
     && docker-php-ext-enable swoole
 
@@ -63,8 +64,8 @@ RUN pecl install amqp \
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer
 
 # ZSH Shell
-RUN apk add --no-cache zsh
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+RUN apk add --no-cache zsh \
+    && git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
 
 # ZSH Plugin
 RUN git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-completions \
