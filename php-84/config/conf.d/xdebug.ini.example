@@ -1,0 +1,21 @@
+[Xdebug]
+# xdebug模式
+xdebug.mode=debug
+
+# 请求开始时自动开启
+xdebug.start_with_request=yes
+
+# client_host client_port 是 xdebug v3.x 中才有的选项
+xdebug.client_host=host.docker.internal
+
+# 此处为监听端口，配置集成开发环境时需要（重要）
+xdebug.client_port=19003
+xdebug.collect_return=true
+
+# 此处搭配的 PHPSTORM，配置 PHPSTORM 时需要
+xdebug.idekey=PHPSTORM 
+
+#   下面配置项，是在 xdebug v2.x 下常用的配置项，不要在 xdebug v3.x 下使用
+##   xdebug.remote_host=127.0.0.1
+##   xdebug.remote_handle=dbgp
+##   xdebug.remote_enable=on

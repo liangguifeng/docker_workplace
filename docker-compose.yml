@@ -26,6 +26,9 @@ services:
     ports:
       - 19081:9000
       - 19501:9501
+      - 18501:8501
+      - 18502:8502
+      - 18503:8503
     build:
       context: php-81
     networks:
@@ -42,6 +45,27 @@ services:
       BACKEND_ROOT: ${BACKEND_ROOT}
     entrypoint: /entrypoint.sh
 
+  php-84:
+    container_name: php-84
+    working_dir: ${BACKEND_ROOT}
+    ports:
+      - 19084:9000
+    build:
+      context: php-84
+    networks:
+      - workplace
+    volumes:
+      - ${BACKEND_ROOT}:${BACKEND_ROOT}
+      - ./php-84/config/php.ini:/usr/local/etc/php/php.ini
+      - ./php-84/config/fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./php-84/entrypoint.sh:/entrypoint.sh
+      - ./php-84/config/conf.d:/usr/local/etc/php/conf.d
+      - ./logs:/logs
+    environment:
+      TZ: ${TZ}
+      BACKEND_ROOT: ${BACKEND_ROOT}
+    entrypoint: /entrypoint.sh
+
   nginx:
     container_name: nginx
     working_dir: /etc/nginx/conf.d
@@ -52,6 +76,7 @@ services:
     depends_on:
       - php-74
       - php-81
+      - php-84
       - redis
     networks:
       workplace:

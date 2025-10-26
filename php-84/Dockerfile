@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 LABEL maintainer="liangguifeng@htdf.group"
 
@@ -18,24 +18,22 @@ RUN sed -i "s:dl-cdn.alpinelinux.org:${ALPINE_URL}:g" /etc/apk/repositories \
 RUN NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1)
 
 # PHP扩展安装 -j$(nproc)指使用系统上可用的处理器核心数量作为并行编译的任务数量
-RUN docker-php-ext-install -j$(nproc) bcmath ctype dom fileinfo filter ftp gettext gmp intl json mbstring mysqli
-RUN docker-php-ext-install -j$(nproc) pcntl pdo pdo_mysql pdo_pgsql pdo_sqlite phar posix session shmop
-RUN docker-php-ext-install -j$(nproc) simplexml soap sockets tokenizer xml xmlrpc xmlwriter zip
+RUN docker-php-ext-install -j$(nproc) bcmath ctype fileinfo filter ftp gettext gmp intl mbstring mysqli
+RUN docker-php-ext-install -j$(nproc) pcntl pdo pdo_mysql pdo_pgsql pdo_sqlite posix session shmop soap sockets zip
 RUN docker-php-ext-install -j$(nproc) opcache
 RUN docker-php-ext-configure gd \
     --with-freetype \
     --with-jpeg \
-    --with-webp && \
-    docker-php-ext-install -j$(nproc) gd
-
+    --with-webp \
+    && docker-php-ext-install -j$(nproc) gd
 
 RUN pecl install -o -f redis \
     && docker-php-ext-enable redis
-RUN pecl install xdebug-3.1.6 \
+RUN pecl install xdebug-3.4.7 \
     && docker-php-ext-enable xdebug
 # 4.8 版本需要 php-7.2 或更高版本
 # 5.0 版本需要 php-8.0 或更高版本
-RUN pecl install swoole-4.8.12 \
+RUN pecl install swoole-6.1.0 \
     && docker-php-ext-enable swoole
 RUN pecl install amqp \
     && docker-php-ext-enable amqp
